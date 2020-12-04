@@ -9,4 +9,6 @@ import com.cdi.tasker.model.Advisor;
 public interface AdvisorRepository extends JpaRepository<Advisor, String>
 {
     public Advisor findByUserId(Integer userId);
+
+    public Advisor findFirstByName(String advisorName);
 }

@@ -16,7 +16,7 @@ public class AvailabilityService
     private AvailabilityRepository availabilityRepo;
 
     @Transactional
-    public List<AvailabilityDetail> getAppointmentsForAdvisor(String advisorName)
+    public List<AvailabilityDetail> getAvailabilityByAdvisorName(String advisorName)
     {
         return availabilityRepo.findByAdvisorName(advisorName);
     }
@@ -31,6 +31,16 @@ public class AvailabilityService
     public void deleteTimeSlot(AvailabilityDetail remove)
     {
         availabilityRepo.delete(remove);
+    }
+
+    public AvailabilityDetail createTimeSlot(AvailabilityDetail newTimeSlot)
+    {
+        return availabilityRepo.save(newTimeSlot);
+    }
+
+    public List<AvailabilityDetail> getAvailabilityByAdvisorId(Integer advisorId)
+    {
+        return availabilityRepo.findByAdvisorId(advisorId);
     }
 
 }

@@ -22,6 +22,7 @@ import com.cdi.tasker.model.AvailabilityDetail;
 import com.cdi.tasker.model.Student;
 import com.cdi.tasker.service.AppointmentService;
 import com.cdi.tasker.service.AvailabilityService;
+import com.cdi.tasker.service.helper.WaitlistHelper;
 import com.cdi.tasker.ui.model.AppointmentTableModel;
 import com.cdi.tasker.ui.model.AvailabilityTableModel;
 import com.cdi.tasker.ui.util.AppointmentMouseListener;
@@ -37,6 +38,9 @@ public class StudentPage extends JFrame
 
     @Autowired
     private AvailabilityService availabilityService;
+
+    @Autowired
+    private WaitlistHelper waitlistHelper;
 
     @Autowired
     private AvailabilityMouseListener availabilityMouseListener;
@@ -90,8 +94,11 @@ public class StudentPage extends JFrame
         advisorAvailPanel.add(advisorNameTextField);
         JButton availCheckButton = new JButton("Check");
         advisorAvailPanel.add(availCheckButton);
+        JButton joinWaitListButton = new JButton("Join Waitlist");
         JTable availabilityTable = new JTable();
         advisorAvailPanel.add(availabilityTable);
+        advisorAvailPanel.add(joinWaitListButton);
+        joinWaitListButton.setVisible(false);
 
         // JScrollPane availTablePane = new JScrollPane(availabilityTable);
 
@@ -105,7 +112,16 @@ public class StudentPage extends JFrame
             public void actionPerformed(ActionEvent actionEvent)
             {
                 List<AvailabilityDetail> availablityList = availabilityService
-                        .getAppointmentsForAdvisor(advisorNameTextField.getText());
+                        .getAvailabilityByAdvisorName(advisorNameTextField.getText());
+
+                if (availablityList == null || availablityList.isEmpty())
+                {
+                    joinWaitListButton.setVisible(true);
+                }
+                else
+                {
+                    joinWaitListButton.setVisible(false);
+                }
                 availabilityTable.setModel(new AvailabilityTableModel(availablityList, true));
                 TableCellRenderer buttonRenderer = new JTableButtonRenderer();
                 availabilityTable.getColumn("").setCellRenderer(buttonRenderer);
@@ -114,6 +130,15 @@ public class StudentPage extends JFrame
                 availabilityTable.addMouseListener(availabilityMouseListener);
 
                 TaskerUtil.setJTableColumnsWidth(availabilityTable, 170);
+            }
+        });
+
+        joinWaitListButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                waitlistHelper.addStudentToWaitlist(advisorNameTextField.getText(), student);
             }
         });
 

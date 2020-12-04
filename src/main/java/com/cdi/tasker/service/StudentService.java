@@ -19,4 +19,9 @@ public class StudentService
         return studentRepo.findByUserId(userId);
     }
 
+    @Transactional
+    public Student getStudentById(Integer studentId)
+    {
+        return studentRepo.findById(studentId).get();
+    }
 }

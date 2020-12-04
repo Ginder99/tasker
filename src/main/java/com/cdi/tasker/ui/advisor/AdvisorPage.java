@@ -26,6 +26,7 @@ import com.cdi.tasker.model.AvailabilityDetail;
 import com.cdi.tasker.service.AdvisorService;
 import com.cdi.tasker.service.AppointmentService;
 import com.cdi.tasker.service.AvailabilityService;
+import com.cdi.tasker.service.helper.AvailabilityHelper;
 import com.cdi.tasker.ui.alert.AlertDialog;
 import com.cdi.tasker.ui.model.AppointmentTableModel;
 import com.cdi.tasker.ui.model.AvailabilityTableModel;
@@ -39,6 +40,9 @@ public class AdvisorPage extends JFrame
 {
     @Autowired
     private AdvisorService advisorService;
+
+    @Autowired
+    private AvailabilityHelper availabilityHelper;
 
     @Autowired
     private AppointmentService appointmentService;
@@ -112,7 +116,7 @@ public class AdvisorPage extends JFrame
                 }
                 else
                 {
-                    advisorService.createTimeSlot(advisor, start, end);
+                    availabilityHelper.createTimeSlot(advisor, start, end);
                 }
             }
         });

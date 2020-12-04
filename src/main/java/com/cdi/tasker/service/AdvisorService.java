@@ -32,4 +32,10 @@ public class AdvisorService
     {
         return advisorRepo.findByUserId(userId);
     }
+
+    @Transactional
+    public Advisor getAdvisorByName(String advisorName)
+    {
+        return advisorRepo.findFirstByName(advisorName);
+    }
 }
